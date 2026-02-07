@@ -17,9 +17,13 @@
 ### Setup:
 ```bash
 git clone https://github.com/atwn/forest.git
-git tool restore
 winget install SQLite.SQLite
-dotnet ef database update
+dotnet tool restore
+dotnet ef database --project .\src\Forest.Api\Forest.Api.csproj update
+
+cd .\src\Forest.Api\
+docker build .
+docker run -p 8080:8080 <image-id>
 ```
 
 ### Endpoints:
@@ -29,7 +33,8 @@ dotnet ef database update
 - `GET  /api/forest/export` - export all nodes in JSON format
 
 ### Checklist:
-- [ ] initialize SQLite database
+- [x] initialize SQLite database
+- [x] add Dockerfile and docker-compose.yml
 - [ ] add `/login` endpoint to issue JWT
 - [ ] split Node into Node + NodeEntity (hide EF-specifics behind a repository)
 - [ ] implement deleting subtrees
