@@ -21,9 +21,7 @@ winget install SQLite.SQLite
 dotnet tool restore
 dotnet ef database --project .\src\Forest.Api\Forest.Api.csproj update
 
-cd .\src\Forest.Api\
-docker build .
-docker run -p 8080:8080 <image-id>
+docker compose up
 ```
 
 ### Endpoints:

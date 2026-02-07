@@ -1,0 +1,30 @@
+# Build artifacts:
+**/bin/
+**/obj/
+
+# IDE folders:
+.vs/
+.vscode/
+
+# Git
+.git/
+.gitignore
+.gitattributes
+
+# OS files:
+.DS_Store
+Thumbs.db
+
+# Local databases / data:
+**/*.db
+**/*.sqlite
+**/*.sqlite3
+data/
+
+# Test results:
+TestResults/
+coverage/
+
+# Docker files:
+docker-compose*
+Dockerfile*

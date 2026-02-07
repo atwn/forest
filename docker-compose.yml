@@ -1,0 +1,12 @@
+services:
+  api:
+    build: .
+    ports:
+      - "8080:8080"
+    volumes:
+      - app_data:/app/data
+    environment:
+      - ASPNETCORE_URLS=http://+:8080
+      - ConnectionStrings__Default=Data Source=/app/data/app.db
+volumes:
+  app_data:
