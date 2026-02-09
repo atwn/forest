@@ -31,6 +31,23 @@ docker compose up --build
 - `GET  /api/nodes/{id}` - get single node details
 - `POST /api/nodes/{id}` - create node (Admin only)
 
+### Solution folder structure:
+```
+src
+    Forest.Api          # the only project so far (should be split into Forest.Domain | Forest.Infrastructure | Forest.Application | Forest.Api)
+        Api             # (missing) the API layer
+        Application     # the core business logic + abstractions
+        Domain          # domain entities
+        Infrasructure   # Auth and DB implementation
+        Migrations      # initial state + migrations for SQLite DB
+        Program.cs      # entry point, middleware setup
+Dockerfile
+docker-compose.yml
+```
+
+The intention behind this structure was to make business logic separate from the specifics of infrastructure (EF, authentication, middleware).
+I tried to follow the Clean Architecture principles with minimal architecture design overhead.
+
 ### Checklist:
 - [x] initialize SQLite database
 - [x] add Dockerfile and docker-compose.yml
