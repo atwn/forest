@@ -1,18 +1,18 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Forest.Domain.Entities;
+using Forest.Infrastructure.Persistence.Entities;
 
 namespace Forest.Infrastructure.Persistence;
 
 public class AppDbContext : DbContext
 {
-    public DbSet<Node> Nodes => Set<Node>();
+    public DbSet<NodeEntity> Nodes => Set<NodeEntity>();
     public AppDbContext(DbContextOptions<AppDbContext> options) : base(options) { }
 
     protected override void OnModelCreating(ModelBuilder builder)
     {
         base.OnModelCreating(builder);
 
-        builder.Entity<Node>(entity =>
+        builder.Entity<NodeEntity>(entity =>
         {
             entity.ToTable("Nodes");
             entity.HasKey(x => x.Id);

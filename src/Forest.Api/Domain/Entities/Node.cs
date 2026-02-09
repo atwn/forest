@@ -7,19 +7,15 @@ public sealed class Node
     public Guid Id { get; private set; } = Guid.NewGuid();
     public string Name { get; private set; } = default!;
     public Guid? ParentId { get; private set; }
-    public Node? Parent { get; private set; }
-    public DateTimeOffset CreatedAt { get; private set; } = DateTimeOffset.UtcNow;
 
-
-    private Node() { }
-
-    public Node(string name, Guid? parentId = null)
+    public Node(Guid id, string name, Guid? parentId = null)
     {
-        this.UpdateName(name);
+        Id = id;
+        Rename(name);
         ParentId = parentId;
     }
 
-    public void UpdateName(string name)
+    public void Rename(string name)
     {
         if (string.IsNullOrWhiteSpace(name))
         {
