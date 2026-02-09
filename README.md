@@ -26,14 +26,15 @@ docker compose up
 
 ### Endpoints:
 - `POST /auth/login` - issue JWT token
-- `GET  /api/nodes/{id}` - get single node
+- `GET  /api/nodes/{id}` - get single node details
 - `POST /api/nodes/{id}` - create node (Admin only)
-- `GET  /api/nodes/export` - export all nodes in JSON format
+- `GET  /api/nodes/search?name={name}` - get nodes by name
 
 ### Checklist:
 - [x] initialize SQLite database
 - [x] add Dockerfile and docker-compose.yml
 - [ ] add `/login` endpoint to issue JWT
+- [ ] search Node by name
 - [ ] split Node into Node + NodeEntity (hide EF-specifics behind a repository)
 - [ ] implement deleting subtrees
 - [ ] (optional) input validation on Node name

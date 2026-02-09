@@ -16,10 +16,10 @@ public class HierarchyService
         _uow = uow;
     }
 
-    public async Task<NodeDto> GetAsync(string name, CancellationToken ct)
+    public async Task<NodeDto> GetAsync(Guid id, CancellationToken ct)
     {
-        var node = await _repo.GetAsync(name, ct);
-        return node != null ? ToDto(node) : throw new KeyNotFoundException($"Node \"{name}\" does not exist");
+        var node = await _repo.GetAsync(id, ct);
+        return node != null ? ToDto(node) : throw new KeyNotFoundException($"Node \"{id}\" does not exist");
     }
 
     public async Task<NodeDto> CreateAsync(CreateNodeRequest req, CancellationToken ct)
@@ -27,7 +27,7 @@ public class HierarchyService
         return await _uow.ExecuteInTransactionAsync(async ct =>
         {
             if (string.IsNullOrWhiteSpace(req.Name))
-                throw new ValidationException("Name is required.");
+                throw new DomainException("Name is required.");
 
             if (req.ParentId is not null) {
                 var parentExists = await _repo.ExistsAsync(req.ParentId.Value, ct);
@@ -39,6 +39,11 @@ public class HierarchyService
 
             return ToDto(node);
         }, ct);
+    }
+
+    public async Task<List<NodeDto>> SearchAsync(string name, CancellationToken ct)
+    {
+        return await _repo.SearchAsync(name, ct).ContinueWith(t => t.Result.Select(ToDto).ToList(), ct);
     }
 
     private static NodeDto ToDto(Node node) => new(node.Id, node.Name, node.ParentId);

@@ -4,7 +4,9 @@ namespace Forest.Application.Abstractions;
 
 public interface INodeRepository
 {
-    Task<Node?> GetAsync(string name, CancellationToken ct);
+    Task<Node> GetAsync(Guid id, CancellationToken ct);
+
+    Task<List<Node>> SearchAsync(string name, CancellationToken ct);
 
     Task AddAsync(Node node, CancellationToken ct);
 

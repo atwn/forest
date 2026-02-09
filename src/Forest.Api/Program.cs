@@ -40,9 +40,17 @@ using (var scope = app.Services.CreateScope())
     await db.Database.ExecuteSqlRawAsync("PRAGMA foreign_keys = ON;");
 }
 
-app.MapGet("/api/nodes/{name}", async (string name, HierarchyService svc, CancellationToken ct) =>
+app.MapGet("api/nodes/search", async (string? name, HierarchyService svc, CancellationToken ct) =>
 {
-    var body = await svc.GetAsync(name, ct);
+    var nodes = await svc.SearchAsync(name ?? string.Empty, ct);
+    return Results.Ok(nodes);
+})
+.Produces<List<NodeDto>>(StatusCodes.Status200OK)
+.Produces(StatusCodes.Status400BadRequest);
+
+app.MapGet("/api/nodes/{id}", async (Guid id, HierarchyService svc, CancellationToken ct) =>
+{
+    var body = await svc.GetAsync(id, ct);
     return Results.Ok(body);
 })
 .Produces<NodeDto>(StatusCodes.Status200OK)
@@ -69,7 +77,7 @@ app.UseExceptionHandler(handler =>
 
         var (status, title) = ex switch
         {
-            ValidationException => (StatusCodes.Status400BadRequest, ex.Message),
+            DomainException => (StatusCodes.Status400BadRequest, ex.Message),
             KeyNotFoundException => (StatusCodes.Status404NotFound, ex.Message),
             BadHttpRequestException => (StatusCodes.Status400BadRequest, ex.Message),
             _ => (StatusCodes.Status500InternalServerError, "Unexpected error.")

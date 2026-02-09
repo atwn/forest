@@ -19,7 +19,7 @@ public sealed class Node
     {
         if (string.IsNullOrWhiteSpace(name))
         {
-            throw new ValidationException("Name is required");
+            throw new DomainException("Name is required");
         }
 
         Name = name.Trim();

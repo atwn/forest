@@ -10,15 +10,28 @@ namespace Forest.Infrastructure.Repositories;
 public class NodeRepository : INodeRepository
 {
     private readonly AppDbContext _db;
+
     public NodeRepository(AppDbContext db)
     {
         _db = db;
     }
 
-    public async Task<Node?> GetAsync(string name, CancellationToken ct)
+    public async Task<Node?> GetAsync(Guid id, CancellationToken ct)
     {
-        var e = await _db.Nodes.AsNoTracking().SingleOrDefaultAsync(x => x.Name == name, ct);
+        var e = await _db.Nodes.AsNoTracking().SingleOrDefaultAsync(x => x.Id == id, ct);
         return e?.ToDomain();
+    }
+
+    public async Task<List<Node>> SearchAsync(string name, CancellationToken ct)
+    {
+        var results = await _db.Nodes
+            .AsNoTracking()
+            .Where(n => EF.Functions.Like(n.Name, $"%{name}%"))
+            .OrderBy(n => n.Name)
+            .Select(n => new Node(n.Id, n.Name, n.ParentId))
+            .Take(50)
+            .ToListAsync(ct);
+        return results;
     }
 
     public async Task AddAsync(Node node, CancellationToken ct)
