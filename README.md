@@ -17,18 +17,18 @@
 ### Setup:
 ```bash
 git clone https://github.com/atwn/forest.git
-winget install SQLite.SQLite
-dotnet tool restore
-dotnet ef database --project .\src\Forest.Api\Forest.Api.csproj update
 
+docker compose build
 docker compose up
+
+# Open http://localhost:8080/swagger in your web browser
 ```
 
 ### Endpoints:
 - `POST /auth/login` - issue JWT token
 - `GET  /api/nodes/{id}` - get single node
 - `POST /api/nodes/{id}` - create node (Admin only)
-- `GET  /api/forest/export` - export all nodes in JSON format
+- `GET  /api/nodes/export` - export all nodes in JSON format
 
 ### Checklist:
 - [x] initialize SQLite database
@@ -56,8 +56,10 @@ dotnet add .\Forest.Api\Forest.Api.csproj package Microsoft.AspNetCore.Authentic
 dotnet restore .\Forest.Api\Forest.Api.csproj --use-lock-file
 
 # Install CLI tools:
+winget install SQLite.SQLite
 dotnet new tool-manifest
 dotnet tool install --global dotnet-ef --version 8.*
+dotnet tool restore
 
 # Initialize SQLite DB:
 dotnet ef migrations --project .\src\Forest.Api\Forest.Api.csproj add Initialize
