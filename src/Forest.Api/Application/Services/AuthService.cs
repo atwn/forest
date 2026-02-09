@@ -8,7 +8,7 @@ public class AuthService
     private readonly ITokenService _tokenService;
 
     // NB! Use a proper user store and password hashing
-    private static readonly (string u, string p, string role)[] Users =
+    private static readonly (string username, string password, string role)[] Users =
     [
         ("admin", "admin", "Admin"),
         ("user", "user", "Reader"),
@@ -23,15 +23,15 @@ public class AuthService
         TimeSpan lifetime)
     {
         var user = Users.SingleOrDefault(x =>
-            string.Equals(x.u, username, StringComparison.Ordinal) && 
-            x.p == password);
+            string.Equals(x.username, username, StringComparison.Ordinal) && 
+            x.password == password);
 
         if (user == default)
             throw new UnauthorizedAccessException("Invalid credentials.");
 
         var claims = new[]
         {
-            new Claim(ClaimTypes.Name, user.u),
+            new Claim(ClaimTypes.Name, user.username),
             new Claim(ClaimTypes.Role, user.role),
         };
 

@@ -18,26 +18,29 @@
 ```bash
 git clone https://github.com/atwn/forest.git
 
-docker compose build
-docker compose up
+docker compose up --build
 
 # Open http://localhost:8080/swagger in your web browser
+# Use credentials of a regular user ('user':'user') or an admin ('admin':'admin') to get a JWT token from the '/auth/login' endpoint
+# Click on Authorize button and paste the JWT token
 ```
 
 ### Endpoints:
 - `POST /auth/login` - issue JWT token
+- `GET  /api/nodes/search?name={name}` - search all nodes by their names
 - `GET  /api/nodes/{id}` - get single node details
 - `POST /api/nodes/{id}` - create node (Admin only)
-- `GET  /api/nodes/search?name={name}` - get nodes by name
 
 ### Checklist:
 - [x] initialize SQLite database
 - [x] add Dockerfile and docker-compose.yml
-- [ ] add `/login` endpoint to issue JWT
+- [x] split Node into Node + NodeEntity (hide EF-specifics behind a repository)
+- [x] add `/login` endpoint to issue JWT
+- [x] restrict access (implement authorization)
 - [ ] implement `/move` endpoint
-- [ ] search Node by name -- add pagination
-- [ ] split Node into Node + NodeEntity (hide EF-specifics behind a repository)
 - [ ] implement deleting subtrees
+- [ ] search Node by name -- add pagination
+- [ ] use GitHub secrets to store JWT private key
 - [ ] (optional) input validation on Node name
 
 ### Initialize:
