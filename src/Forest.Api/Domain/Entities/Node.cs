@@ -1,32 +1,31 @@
-﻿using Forest.Api.Domain.Exceptions;
+﻿using Forest.Domain.Exceptions;
 
-namespace Forest.Api.Domain.Entities
+namespace Forest.Domain.Entities;
+
+public sealed class Node
 {
-    public sealed class Node
+    public Guid Id { get; private set; } = Guid.NewGuid();
+    public string Name { get; private set; } = default!;
+    public Guid? ParentId { get; private set; }
+    public Node? Parent { get; private set; }
+    public DateTimeOffset CreatedAt { get; private set; } = DateTimeOffset.UtcNow;
+
+
+    private Node() { }
+
+    public Node(string name, Guid? parentId = null)
     {
-        public Guid Id { get; private set; } = Guid.NewGuid();
-        public string Name { get; private set; } = default!;
-        public Guid? ParentId { get; private set; }
-        public Node? Parent { get; private set; }
-        public DateTimeOffset CreatedAt { get; private set; } = DateTimeOffset.UtcNow;
+        this.UpdateName(name);
+        ParentId = parentId;
+    }
 
-
-        private Node() { }
-
-        public Node(string name, Guid? parentId = null)
+    public void UpdateName(string name)
+    {
+        if (string.IsNullOrWhiteSpace(name))
         {
-            this.UpdateName(name);
-            ParentId = parentId;
+            throw new ValidationException("Name is required");
         }
 
-        public void UpdateName(string name)
-        {
-            if (string.IsNullOrWhiteSpace(name))
-            {
-                throw new DomainException("Name is required");
-            }
-
-            Name = name.Trim();
-        }
+        Name = name.Trim();
     }
 }

@@ -57,5 +57,9 @@ dotnet restore .\Forest.Api\Forest.Api.csproj --use-lock-file
 
 # Install CLI tools:
 dotnet new tool-manifest
-dotnet tool install --global dotnet-ef --version 8.0.0
+dotnet tool install --global dotnet-ef --version 8.*
+
+# Initialize SQLite DB:
+dotnet ef migrations --project .\src\Forest.Api\Forest.Api.csproj add Initialize
+dotnet ef database --project .\src\Forest.Api\Forest.Api.csproj update
 ```

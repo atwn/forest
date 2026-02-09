@@ -11,8 +11,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Forest.Api.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20260207102518_Initialize")]
-    partial class Initialize
+    [Migration("20260209052350_AddIndexNodeByName")]
+    partial class AddIndexNodeByName
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -20,7 +20,7 @@ namespace Forest.Api.Migrations
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "8.0.23");
 
-            modelBuilder.Entity("Forest.Api.Domain.Entities.Node", b =>
+            modelBuilder.Entity("Forest.Domain.Entities.Node", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -39,14 +39,16 @@ namespace Forest.Api.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("Name");
+
                     b.HasIndex("ParentId");
 
                     b.ToTable("Nodes", (string)null);
                 });
 
-            modelBuilder.Entity("Forest.Api.Domain.Entities.Node", b =>
+            modelBuilder.Entity("Forest.Domain.Entities.Node", b =>
                 {
-                    b.HasOne("Forest.Api.Domain.Entities.Node", "Parent")
+                    b.HasOne("Forest.Domain.Entities.Node", "Parent")
                         .WithMany()
                         .HasForeignKey("ParentId")
                         .OnDelete(DeleteBehavior.Restrict);
