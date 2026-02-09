@@ -34,7 +34,8 @@ docker compose up
 - [x] initialize SQLite database
 - [x] add Dockerfile and docker-compose.yml
 - [ ] add `/login` endpoint to issue JWT
-- [ ] search Node by name
+- [ ] implement `/move` endpoint
+- [ ] search Node by name -- add pagination
 - [ ] split Node into Node + NodeEntity (hide EF-specifics behind a repository)
 - [ ] implement deleting subtrees
 - [ ] (optional) input validation on Node name
